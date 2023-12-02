@@ -44,11 +44,24 @@ let is_round_possible round : bool =
 let is_game_possible game : bool =
     List.forall is_round_possible game.Rounds
 
-
 let solvePartOne (input: string List) : string =
-    (get_games input)
+    get_games input
     |> List.filter is_game_possible
     |> List.fold (fun acc game -> acc + game.Id) 0
     |> string
 
-let solvePartTwo (input: string List) = "TODO"
+let max_colors game : Round =
+    game.Rounds
+    |> List.fold
+        (fun acc round ->
+            { red = System.Math.Max(acc.red, round.red)
+              green = System.Math.Max(acc.green, round.green)
+              blue = System.Math.Max(acc.blue, round.blue) })
+        { red = 0; green = 0; blue = 0 }
+
+let power (round: Round) : int = round.red * round.green * round.blue
+
+let solvePartTwo (input: string List) =
+    get_games input
+    |> List.fold (fun acc game -> (max_colors game |> power) + acc) 0
+    |> string
