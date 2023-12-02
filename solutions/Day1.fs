@@ -13,7 +13,7 @@ let isNumber (s: string) =
 let toNumber (s: string) =
     (numbers |> List.findIndex (fun num -> s.EndsWith(num))) + 1
 
-let getSum (input: string[]) (includeText: bool) =
+let getSum (input: string List) (includeText: bool) =
     let mutable sum = 0
 
     for line in input do
@@ -43,6 +43,6 @@ let getSum (input: string[]) (includeText: bool) =
 
     sum.ToString()
 
-let solvePartOne (input: string[]) = getSum input false
+let solvePartOne (input: string List) = getSum input false
 
-let solvePartTwo (input: string[]) = getSum input true
+let solvePartTwo (input: string List) = getSum input true

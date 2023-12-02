@@ -8,7 +8,7 @@ let main args =
 
     // Read the input file
     let readLines (path: string) = File.ReadAllLines(path)
-    let input = readLines $"./inputs/day-{day}.txt"
+    let input = readLines $"./inputs/day-{day}.txt" |> Array.toList
 
     // Run the solution
     let result =
