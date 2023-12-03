@@ -80,16 +80,8 @@ let is_part (input: string List) (number: Number) : bool =
     || has_symbol input number.line (number.start + number.len) 1
 
 let solvePartOne (input: string List) =
-    let numbers = get_numbers input 0 0 0 0 []
-    // printfn "%A" numbers
-    let meow =
-        List.map (fun number -> number.value) ((List.filter (is_part input) numbers))
-
-    printfn "%A" meow
-
     (List.filter (is_part input) (get_numbers input 0 0 0 0 []))
     |> List.fold (fun acc number -> acc + number.value) 0
     |> string
-// "meow"
 
 let solvePartTwo (input: string List) = "meow"
