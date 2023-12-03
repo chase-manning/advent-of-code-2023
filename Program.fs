@@ -23,6 +23,11 @@ let main args =
             | "1" -> Day2.solvePartOne input
             | "2" -> Day2.solvePartTwo input
             | _ -> "Unknown part"
+        | "3" ->
+            match part with
+            | "1" -> Day3.solvePartOne input
+            | "2" -> Day3.solvePartTwo input
+            | _ -> "Unknown part"
         | _ -> "Unknown day"
 
     // Print the result
