@@ -43,6 +43,6 @@ let getSum (input: string List) (includeText: bool) =
 
     sum.ToString()
 
-let solvePartOne (input: string List) = getSum input false
+let part1 (input: string List) = getSum input false
 
-let solvePartTwo (input: string List) = getSum input true
+let part2 (input: string List) = getSum input true

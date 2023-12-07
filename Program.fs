@@ -15,18 +15,23 @@ let main args =
         match day with
         | "1" ->
             match part with
-            | "1" -> Day1.solvePartOne input
-            | "2" -> Day1.solvePartTwo input
+            | "1" -> Day1.part1 input
+            | "2" -> Day1.part2 input
             | _ -> "Unknown part"
         | "2" ->
             match part with
-            | "1" -> Day2.solvePartOne input
-            | "2" -> Day2.solvePartTwo input
+            | "1" -> Day2.part1 input
+            | "2" -> Day2.part2 input
             | _ -> "Unknown part"
         | "3" ->
             match part with
-            | "1" -> Day3.solvePartOne input
-            | "2" -> Day3.solvePartTwo input
+            | "1" -> Day3.part1 input
+            | "2" -> Day3.part2 input
+            | _ -> "Unknown part"
+        | "4" ->
+            match part with
+            | "1" -> Day4.part1 input
+            | "2" -> Day4.part2 input
             | _ -> "Unknown part"
         | _ -> "Unknown day"
 

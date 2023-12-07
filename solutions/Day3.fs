@@ -103,7 +103,7 @@ let is_part (input: string List) (number: Number) : bool =
     || has_symbol input number.line (number.start - 1) 1 // Checking left of the number
     || has_symbol input number.line (number.start + number.len) 1 // Checking right of the number
 
-let solvePartOne (input: string List) =
+let part1 (input: string List) =
     (List.filter (is_part input) (get_numbers input 0 0 0 0 []))
     |> List.fold (fun acc number -> acc + number.value) 0
     |> string
@@ -112,7 +112,7 @@ let gear_ratio gear (numbers: Number List) : int =
     let adjacent = adjacent_numbers gear numbers
     adjacent[0].value * adjacent[1].value
 
-let solvePartTwo (input: string List) =
+let part2 (input: string List) =
     get_gears input
     |> List.fold (fun acc gear -> acc + (gear_ratio gear (get_numbers input 0 0 0 0 []))) 0
     |> string

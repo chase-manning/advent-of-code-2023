@@ -41,7 +41,7 @@ let is_round_possible round =
 let is_game_possible game =
     List.forall is_round_possible game.Rounds
 
-let solvePartOne input =
+let part1 input =
     get_games input
     |> List.filter is_game_possible
     |> List.fold (fun acc game -> acc + game.Id) 0
@@ -58,7 +58,7 @@ let max_colors game =
 
 let power (round: Round) : int = round.red * round.green * round.blue
 
-let solvePartTwo (input: string List) =
+let part2 (input: string List) =
     get_games input
     |> List.fold (fun acc game -> (max_colors game |> power) + acc) 0
     |> string
