@@ -73,15 +73,46 @@ let rec has_symbol (input: string List) (line: int) (pos: int) (len: int) : bool
                     | false -> has_symbol input line (pos + 1) (len - 1)
                 | false -> true
 
+let rec get_asterisk (input: string List) (line: int) (pos: int) asterisks =
+    match line = input.Length with
+    | true -> asterisks
+    | false ->
+        match pos = input[line].Length with
+        | true -> get_asterisk input (line + 1) 0 asterisks
+        | false ->
+            match input[line][pos] = '*' with
+            | true -> get_asterisk input line (pos + 1) ((line, pos) :: asterisks)
+            | false -> get_asterisk input line (pos + 1) asterisks
+
+
+let adjacent_numbers asterisk (numbers: Number List) =
+    numbers
+    |> List.filter (fun number ->
+        number.line <= fst asterisk + 1
+        && number.line >= fst asterisk - 1
+        && number.start <= snd asterisk + 1
+        && (number.start + number.len) >= snd asterisk)
+
+let get_gears (input: string List) =
+    (get_asterisk input 0 0 [])
+    |> List.filter (fun asterisk -> (adjacent_numbers asterisk (get_numbers input 0 0 0 0 [])).Length = 2)
+
 let is_part (input: string List) (number: Number) : bool =
-    has_symbol input (number.line - 1) (number.start - 1) (number.len + 2)
-    || has_symbol input (number.line + 1) (number.start - 1) (number.len + 2)
-    || has_symbol input number.line (number.start - 1) 1
-    || has_symbol input number.line (number.start + number.len) 1
+    has_symbol input (number.line - 1) (number.start - 1) (number.len + 2) // Checking above the number
+    || has_symbol input (number.line + 1) (number.start - 1) (number.len + 2) // Checking below the number
+    || has_symbol input number.line (number.start - 1) 1 // Checking left of the number
+    || has_symbol input number.line (number.start + number.len) 1 // Checking right of the number
 
 let solvePartOne (input: string List) =
     (List.filter (is_part input) (get_numbers input 0 0 0 0 []))
     |> List.fold (fun acc number -> acc + number.value) 0
     |> string
 
-let solvePartTwo (input: string List) = "meow"
+let gear_ratio gear (numbers: Number List) : int =
+    let adjacent = adjacent_numbers gear numbers
+    adjacent[0].value * adjacent[1].value
+
+let solvePartTwo (input: string List) =
+    get_gears input
+    |> List.fold (fun acc gear -> acc + (gear_ratio gear (get_numbers input 0 0 0 0 []))) 0
+    |> string
