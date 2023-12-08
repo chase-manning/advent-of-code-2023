@@ -14,7 +14,7 @@ let seeds (lines: string List) =
     let numbers = firstLine.Split(": ")[1]
     numbers.Split(" ") |> Array.toList |> List.map Int64.Parse
 
-let add_mappings (mapping: Mapping) (line: string) : Mapping =
+let addMappings (mapping: Mapping) (line: string) : Mapping =
     let parts = line.Split(" ")
     let dest = Int64.Parse(parts.[0])
     let source = Int64.Parse(parts.[1])
@@ -35,11 +35,11 @@ let mapping (lines: string List) (pos: int) : Mapping =
             mapping
         else
             let line = lines.[pos]
-            run (add_mappings mapping line) (pos + 1)
+            run (addMappings mapping line) (pos + 1)
 
     run [] (pos + 1)
 
-let get_mappings (lines: string List) : Mapping List =
+let getMappings (lines: string List) : Mapping List =
     let mutable mappings: Mapping List = []
 
     for i = 2 to lines.Length - 1 do
@@ -73,11 +73,8 @@ let seedLocation (input: Int64) (mappings: Mapping List) : Int64 =
     run input 0
 
 let part1 (input: string List) =
-    let seeds = seeds input
-    let mappings = (get_mappings input) |> List.rev
-    // printfn "%A" mappings
-    let seedLocations = seeds |> List.map (fun seed -> seedLocation seed mappings)
-    // printfn "%A" seedLocations
+    let mappings = (getMappings input) |> List.rev
+    let seedLocations = seeds input |> List.map (fun seed -> seedLocation seed mappings)
     seedLocations |> List.min |> string
 
 let part2 (input: string List) = "meow"
