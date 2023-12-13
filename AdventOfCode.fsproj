@@ -14,6 +14,23 @@
     <Compile Include="./solutions/Day6.fs" />
     <Compile Include="./solutions/Day7.fs" />
     <Compile Include="./solutions/Day8.fs" />
+    <Compile Include="./solutions/Day9.fs" />
+    <Compile Include="./solutions/Day10.fs" />
+    <Compile Include="./solutions/Day11.fs" />
+    <Compile Include="./solutions/Day12.fs" />
+    <Compile Include="./solutions/Day13.fs" />
+    <Compile Include="./solutions/Day14.fs" />
+    <Compile Include="./solutions/Day15.fs" />
+    <Compile Include="./solutions/Day16.fs" />
+    <Compile Include="./solutions/Day17.fs" />
+    <Compile Include="./solutions/Day18.fs" />
+    <Compile Include="./solutions/Day19.fs" />
+    <Compile Include="./solutions/Day20.fs" />
+    <Compile Include="./solutions/Day21.fs" />
+    <Compile Include="./solutions/Day22.fs" />
+    <Compile Include="./solutions/Day23.fs" />
+    <Compile Include="./solutions/Day24.fs" />
+    <Compile Include="./solutions/Day25.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
