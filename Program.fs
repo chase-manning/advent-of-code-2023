@@ -48,6 +48,11 @@ let main args =
             | "1" -> Day7.part1 input
             | "2" -> Day7.part2 input
             | _ -> "Unknown part"
+        | "8" ->
+            match part with
+            | "1" -> Day8.part1 input
+            | "2" -> Day8.part2 input
+            | _ -> "Unknown part"
         | _ -> "Unknown day"
 
     // Print the result
