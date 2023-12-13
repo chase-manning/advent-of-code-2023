@@ -2,22 +2,26 @@ module Day7
 
 open System
 
-let CARDS = [ '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 'T'; 'J'; 'Q'; 'K'; 'A' ]
+let CARDS_PART_ONE =
+    [ '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 'T'; 'J'; 'Q'; 'K'; 'A' ]
+
+let CARDS_PART_TWO =
+    [ 'J'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 'T'; 'Q'; 'K'; 'A' ]
 
 type Hand = { cards: int List; bet: int }
 
 type Result = { bet: int; score: float }
 
-let hand (input: string) : Hand =
+let hand (cards: char List) (input: string) : Hand =
     let parts = input.Split(" ")
 
     { cards =
         parts.[0].ToCharArray()
         |> List.ofArray
-        |> List.map (fun s -> List.findIndex (fun c -> c = s) CARDS)
+        |> List.map (fun s -> List.findIndex (fun c -> c = s) cards)
       bet = Int32.Parse(parts.[1]) }
 
-let hands (input: string list) : Hand List = input |> List.map hand
+let hands (input: string list) (cards: char List) : Hand List = input |> List.map (hand cards)
 
 let isFiveOfAKind (hand: Hand) : bool =
     hand.cards |> List.forall (fun card -> card = hand.cards.[0])
@@ -71,17 +75,34 @@ let tieBreaker (cards: int List) =
     |> List.mapi (fun i card -> (float card) * (10.0 ** float ((i + 1) * 2)))
     |> List.sum
 
-let handScore (hand: Hand) : float =
-    let handTypePoints = handTypePoints hand
+let handScore (pretend: bool, hand: Hand) : float =
+    let rec run (hand: Hand) : float =
+        if not pretend then
+            handTypePoints hand
+        else if List.exists (fun card -> card = 0) hand.cards then
+            let index = List.findIndex (fun card -> card = 0) hand.cards
+
+            let options: Hand List =
+                [ 1..13 ]
+                |> List.map (fun card ->
+                    { cards = hand.cards.[0 .. index - 1] @ [ card ] @ hand.cards.[index + 1 .. 4]
+                      bet = hand.bet })
+
+            options |> List.map (fun hand -> run hand) |> List.max
+
+        else
+            handTypePoints hand
+
+    let handTypePoints = run hand
     handTypePoints * 10.0 ** 14.0 + tieBreaker hand.cards
 
-let result (hand: Hand) : Result =
+let result (pretend: bool, hand: Hand) : Result =
     { bet = hand.bet
-      score = handScore hand }
+      score = handScore (pretend, hand) }
 
-let part1 (input: string List) =
-    let hands = hands input
-    let results = hands |> List.map result
+let solution (cards: char List) (input: string List) (pretend: bool) =
+    let hands = hands input cards
+    let results = hands |> List.map (fun hand -> result (pretend, hand))
 
     results
     |> List.sortBy (fun result -> result.score)
@@ -89,4 +110,6 @@ let part1 (input: string List) =
     |> List.sum
     |> string
 
-let part2 (input: string List) = "meow"
+let part1 (input: string List) = solution CARDS_PART_ONE input false
+
+let part2 (input: string List) = solution CARDS_PART_TWO input true
