@@ -73,7 +73,7 @@ let getToVisit (mirrors: Mirrors) (visit: Visit) =
         else
             raise (Exception "Unexpected token")
 
-let getVisits (mirrors: Mirrors) : Visit List =
+let getVisits (mirrors: Mirrors) (entry: Visit) : Visit List =
     let rec run (visited: Visit List) (toVisit: Visit List) : Visit List =
         // printMirrors mirrors visited
 
@@ -95,7 +95,7 @@ let getVisits (mirrors: Mirrors) : Visit List =
             else
                 run (visited @ [ visit ]) (newToVisit @ getToVisit mirrors visit)
 
-    run [] [ { x = 0; y = 0; direction = Right } ]
+    run [] [ entry ]
 
 let getEnergized (visited: Visit List) : int =
     visited |> List.map (fun v -> (v.x, v.y)) |> List.distinct |> List.length
@@ -103,13 +103,26 @@ let getEnergized (visited: Visit List) : int =
 let getMirrors (line: string List) : Mirrors =
     line |> List.map (fun s -> s.ToCharArray() |> Array.toList)
 
+let possibleEntryVisits (mirrors: Mirrors) : Visit List =
+    let maxX = mirrors.[0].Length - 1
+    let maxY = mirrors.Length - 1
+
+    let top = [ 0..maxX ] |> List.map (fun x -> { x = x; y = 0; direction = Down })
+    let bottom = [ 0..maxX ] |> List.map (fun x -> { x = x; y = maxY; direction = Up })
+    let left = [ 0..maxY ] |> List.map (fun y -> { x = 0; y = y; direction = Right })
+    let right = [ 0..maxY ] |> List.map (fun y -> { x = maxX; y = y; direction = Left })
+
+    top @ bottom @ left @ right
+
 let part1 (input: string List) =
     let mirrors = getMirrors input
-    let visited = getVisits mirrors
+    let visited = getVisits mirrors { x = 0; y = 0; direction = Right }
     let energized = getEnergized visited
     energized |> string
 
-
-
-
-let part2 (input: string List) = "meow"
+let part2 (input: string List) =
+    let mirrors = getMirrors input
+    let entries = possibleEntryVisits mirrors
+    let visits = entries |> List.map (fun e -> getVisits mirrors e)
+    let energized = visits |> List.map getEnergized |> List.max
+    energized |> string
