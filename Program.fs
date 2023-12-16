@@ -10,6 +10,10 @@ let main args =
     let readLines (path: string) = File.ReadAllLines(path)
     let input = readLines $"./inputs/day-{day}.txt" |> Array.toList
 
+    let stopwatch = System.Diagnostics.Stopwatch()
+
+    stopwatch.Start()
+
     // Run the solution
     let result =
         match day with
@@ -139,6 +143,10 @@ let main args =
             | "2" -> Day25.part2 input
             | _ -> "Unknown part"
         | _ -> "Unknown day"
+
+    stopwatch.Stop()
+
+    printfn "The function took %d seconds to execute." (stopwatch.ElapsedMilliseconds / 1000L)
 
     // Print the result
     printfn "%s" result
