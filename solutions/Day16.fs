@@ -53,7 +53,7 @@ let getToVisit mirrors visit =
             raise (Exception "Unexpected token")
 
 let getVisits mirrors entry =
-    let rec run visited (toVisit: Visit List) =
+    let rec run (visited: Visit Set) (toVisit: Visit List) =
         if toVisit.Length = 0 then
             visited
         else
@@ -62,15 +62,15 @@ let getVisits mirrors entry =
 
             if not (inRange visit.x visit.y mirrors) then
                 run visited newToVisit
-            else if visited |> List.exists (fun v -> v = visit) then
+            else if visited.Contains(visit) then
                 run visited newToVisit
             else
-                run (visited @ [ visit ]) (newToVisit @ getToVisit mirrors visit)
+                run (Set.add visit visited) (newToVisit @ getToVisit mirrors visit)
 
-    run [] [ entry ]
+    run Set.empty [ entry ]
 
 let getEnergized visited =
-    visited |> List.map (fun v -> (v.x, v.y)) |> List.distinct |> List.length
+    visited |> Set.map (fun v -> (v.x, v.y)) |> Set.count
 
 let getMirrors (line: string List) =
     line |> List.map (fun s -> s.ToCharArray() |> Array.toList)
