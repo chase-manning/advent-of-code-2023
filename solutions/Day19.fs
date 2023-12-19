@@ -136,17 +136,9 @@ let partTotal (part: Part) : int = part.x + part.m + part.a + part.s
 
 let part1 (input: string List) =
     let workflows = getWorkflows input
-    printfn "%A" workflows
-
     let parts = getParts input
-    printfn "%A" parts
-
     let accepted = parts |> List.filter (fun part -> isAccepted part workflows)
-
-    printfn "%A" accepted
-
-    let total = accepted |> List.map partTotal |> List.sum
-    total |> string
+    accepted |> List.map partTotal |> List.sum |> string
 
 let getPartRanges (workflows: Map<string, Workflow>) : PartRange List =
     let rec run (partRange: PartRange) : PartRange List =
@@ -355,6 +347,4 @@ let combinations (partRange: PartRange) : Int128 =
 let part2 (input: string List) =
     let partRanges = getPartRanges (getWorkflows input)
     let accepted = partRanges |> List.filter (fun partRange -> partRange.value = "A")
-    printfn "%A" accepted
-
     accepted |> List.map combinations |> List.sum |> string
