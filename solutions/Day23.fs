@@ -140,18 +140,14 @@ let getLongestPath (startNode: Pos) (endNode: Pos) (connections: Map<Pos, Connec
 
     run Set.empty startNode 0 |> List.max
 
-let part1 (input: string List) =
-    let map = getMap input true
+let solve (input: string List) (slippery: bool) =
+    let map = getMap input slippery
     let nodes = getNodes map
     let connections = getConnections map nodes
     let startNode = nodes |> Set.toList |> List.head
     let endNode = nodes |> Set.toList |> List.last
     getLongestPath startNode endNode connections |> string
 
-let part2 (input: string List) =
-    let map = getMap input false
-    let nodes = getNodes map
-    let connections = getConnections map nodes
-    let startNode = nodes |> Set.toList |> List.head
-    let endNode = nodes |> Set.toList |> List.last
-    getLongestPath startNode endNode connections |> string
+let part1 (input: string List) = solve input true
+
+let part2 (input: string List) = solve input false
