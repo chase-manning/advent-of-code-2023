@@ -1,0 +1,23 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: true
+    name: Tests
+    runs-on: ubuntu-latest
+    env:
+      OPTIMISM_RPC: ${{ secrets.OPTIMISM_RPC }}
+    steps:
+      - uses: actions/setup-dotnet@v3
+      - name: Install Dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "8.0.x"
+      - name: Run Tests
+        run: dotnet test
