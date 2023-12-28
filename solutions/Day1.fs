@@ -1,10 +1,11 @@
 module Day1
 
+open System
+
 let numbers =
     [ "one"; "two"; "three"; "four"; "five"; "six"; "seven"; "eight"; "nine" ]
 
-let isDigit c = System.Char.IsDigit c
-let toInt c = System.Int32.Parse(c.ToString())
+let toInt c = Int32.Parse(c.ToString())
 let combine (a: int) (b: int) = a * 10 + b
 
 let isNumber (s: string) =
@@ -14,34 +15,33 @@ let toNumber (s: string) =
     (numbers |> List.findIndex (fun num -> s.EndsWith(num))) + 1
 
 let getSum (input: string List) (includeText: bool) =
-    let mutable sum = 0
+    let rec run (sum: int) (first: int) (last: int) (text: string) (line: string) (index: int) =
+        if index = line.Length then
+            sum + combine first last
+        else
+            let c = line.[index]
 
-    for line in input do
-        let mutable text = ""
-        let mutable first = -1
-        let mutable last = 0
-
-        for i = 0 to line.Length - 1 do
-            let c = line.[i]
-
-            if isDigit c then
+            if Char.IsDigit c then
                 if first = -1 then
-                    first <- toInt c
-
-                last <- toInt c
-                text <- ""
+                    run sum (toInt c) (toInt c) "" line (index + 1)
+                else
+                    run sum first (toInt c) "" line (index + 1)
             else if includeText then
-                text <- text + c.ToString()
+                let newText = text + c.ToString()
 
-                if isNumber text then
+                if isNumber newText then
+                    let newLast = toNumber newText
+
                     if first = -1 then
-                        first <- toNumber text
+                        run sum (toNumber newText) newLast newText line (index + 1)
+                    else
+                        run sum first newLast newText line (index + 1)
+                else
+                    run sum first last newText line (index + 1)
+            else
+                run sum first last text line (index + 1)
 
-                    last <- toNumber text
-
-        sum <- sum + combine first last
-
-    sum.ToString()
+    input |> List.fold (fun acc line -> run acc (-1) 0 "" line 0) 0 |> string
 
 let part1 (input: string List) = getSum input false
 
