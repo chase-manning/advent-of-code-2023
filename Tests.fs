@@ -185,13 +185,13 @@ let TestDay19Part2 () =
 // let TestDay22Part2 () =
 //     getInput 22 |> Day22.part2 |> should equal "1289"
 
-// [<Test>]
-// let TestDay23Part1 () =
-//     getInput 23 |> Day23.part1 |> should equal "2310"
+[<Test>]
+let TestDay23Part1 () =
+    getInput 23 |> Day23.part1 |> should equal "94"
 
-// [<Test; Timeout(600000)>]
-// let TestDay23Part2 () =
-//     getInput 23 |> Day23.part2 |> should equal "6738"
+[<Test; Timeout(600000)>]
+let TestDay23Part2 () =
+    getInput 23 |> Day23.part2 |> should equal "154"
 
 // [<Test>]
 // let TestDay24Part1 () =
